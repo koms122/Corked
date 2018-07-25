@@ -1,0 +1,23 @@
+﻿@model IEnumerable<WineProducts>
+   
+@foreach(var product in Model)
+{
+    <div>
+        <h1>@product.Name</h1>
+        <p>@product.Description</p>
+        <img src="@product.ImagePath" alt=" =@product.Name" />
+        <p>@(product.Price.HasValue ? product.Price.Value.ToString("c") : "No Price")</p>
+        <a asp-controller="WineList" asp-action="Details" asp-route-id="@product.ID" class="btn btn-secondary">View Details</a>
+    </div>
+}
+
+<form>
+    <select name="category">
+        <option value="">All Products</option>
+        <option value="redWine">Red Wine</option>
+        <option value="whiteWine">White Wine</option>
+    </select>
+    <button>Filter</button>
+</form>
+
+<h2>It's time to wine!</h2>
