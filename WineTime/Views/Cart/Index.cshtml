@@ -1,0 +1,30 @@
+﻿@model WineCart
+@{ 
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+@if (Model.Products.Count == 0)
+{
+    <p>You don't have anything in your cart, <a asp-controller="wine" asp-action="index">check out some products</a></p>
+}
+else
+{
+    <table class="table">
+        @foreach (var product in Model.Products)
+        {
+        <tr>
+            <td>@product.Name</td>
+            <td>@((product.Price ?? 0).ToString("C"))</td>
+            <td>@product.Description</td>
+            <td>
+                <form asp-action="remove" method="post">
+                    <input type="hidden" value="@product.ID" />
+                    <button class="btn btn-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
+        }
+    </table>
+}
+    <a asp-controller="checkout" asp-action="index" class="btn btn-primary">Checkout</a>

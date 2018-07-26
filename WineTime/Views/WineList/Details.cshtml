@@ -5,9 +5,7 @@
 <h2>@Model.Name</h2>
 <img src="/@Model.Name" />
 
-// post data is encrypted
 <form method="post">
-    // If you don't add Model.ID then you would never know what they're adding to the cart
     <input type="hidden" value="@Model.ID" />
     <select name="color">
         <option value="red">Red</option>

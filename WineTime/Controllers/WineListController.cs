@@ -80,7 +80,6 @@ namespace WineTime.Controllers
                     ImagePath = "./images/BarefootPinotGrigio.jpeg",
                     Price = 9.99m
                 });
-                Console.WriteLine("Get White Wine");
             }
 
             return View(model);
@@ -99,14 +98,13 @@ namespace WineTime.Controllers
             return View(model);
         }
 
-        /*
         [HttpPost]
         public IActionResult Details(int? id, int quantity, string color)
         {
             // TODO: Take the Posted details and update the user's cart
-
+            Console.WriteLine("User added " + id.ToString() + " , " + quantity.ToString() + ", " + color);
             return RedirectToAction("Index", "Cart");
         }
-        */
+
     }
 }
