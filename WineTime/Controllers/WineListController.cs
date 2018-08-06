@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WineTime.Models;
@@ -11,6 +12,7 @@ namespace WineTime.Controllers
     {
         public IActionResult Index(string category)
         {
+            ViewBag.selectedCategory = category;
             List<WineProducts> model = new List<WineProducts>();
 
             if (string.IsNullOrEmpty(category))

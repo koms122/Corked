@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - &#161;Corked</title>
 
-
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two:700|Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
-
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-
+<!-- NavBar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">&#161;Corked</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item">
@@ -32,22 +32,26 @@
                     <a asp-controller="WineList" asp-action="Index" asp-route-category="whiteWine">White Wine</a>
                 </li>
             </ul>
+            <span class="user">
+                <a href="signUp">Sign Up</a>|<a href="login">Login</a>
+                <button type="button" class="btn btn-info">&#161;Cart <span class="badge badge-info">0</span></button>
+            </span>
         </div>
     </nav>
-
-    <div class="container body-content">
+    
+    <div class="body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>
-                &copy; 2018 - &#161;Corked
-                <nav class="nav">
-                    <a asp-area="" asp-controller="Home" asp-action="About">About</a>
-                    <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
-                </nav>
-            </p>
-        </footer>
     </div>
+
+    <footer>
+        <div class="fixed-bottom">
+            &copy; 2018 - &#161;Corked
+            <span>
+                <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+                <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+            </span>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

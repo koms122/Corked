@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WineTime.Models;
 
 namespace WineTime.Controllers
 {
@@ -12,19 +13,18 @@ namespace WineTime.Controllers
         {
             return View();
         }
-        
-        public IActionResult Index(string email)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(CheckoutModel model)
         {
-            if (string.IsNullOrEmpty(email))
+            if (ModelState.IsValid)
             {
-                //TODO: we havea n error..redisplay the form;
-                return View();
-            }
-            else
-            {
-                //TODO: Save this info to the database for shipping purposes
+                //TODO: save this info for shipping purposes
                 return RedirectToAction("Index", "Receipt", new { id = Guid.NewGuid() });
             }
+            //TODO: we havea n error..redisplay the form;
+            return View();
         }
     }
 }
