@@ -13,5 +13,9 @@ namespace WineTime.Models
         public decimal? Price { get; set; }
         public string ImagePath { get; set; }
         public DateTime Schedule { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateLastModified { get; set; }
+        public WineCategory WineCategory { get; set; }
+        public string WineCategoryName { get; set; }
     }
 }

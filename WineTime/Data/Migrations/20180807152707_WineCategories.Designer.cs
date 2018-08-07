@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WineTime.Data;
 
 namespace WineTime.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180807152707_WineCategories")]
+    partial class WineCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,11 +221,7 @@ namespace WineTime.Data.Migrations
 
                     b.Property<DateTime>("Schedule");
 
-                    b.Property<string>("WineCategoryName");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("WineCategoryName");
 
                     b.ToTable("WineProducts");
                 });
@@ -271,13 +269,6 @@ namespace WineTime.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WineTime.Models.WineProducts", b =>
-                {
-                    b.HasOne("WineTime.Models.WineCategory", "WineCategory")
-                        .WithMany("WineProduct")
-                        .HasForeignKey("WineCategoryName");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,30 +1,53 @@
-﻿/*.bg-dark {
-    background: linear-gradient(#400113, #5A021A);
-}*/
-
-/* Set some basic padding to keep content from hitting the edges     */
+﻿/* Body */
 .body-content {
     padding-top: 15px;
     padding-left: 15px;
     padding-right: 15px;
 }
 
+body {
+    padding-bottom: 20px;
+    font-family: 'Open Sans', sans-serif;
+    color: goldenrod;
+    height: 100%;
+}
+
+div.mainHomeParent {
+    color: goldenrod;
+    font-family: 'Lobster Two', cursive;
+    height: 72px;
+    line-height: 72px;
+}
+
+div .mainHomeChild {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+/*Footer*/
 .footer {
     display: flex;
+}
+
+footer {
+    text-align: center;
+}
+
+footer span {
+    padding-left: 2em;
+    word-spacing: 0.5em;
 }
 
 .justify-content-end {
     list-style: none;
 }
 
+/*Navbar
 .navbar-light .navbar-brand {
     color: goldenrod;
     margin-left: 65px;
     margin-right: 50px;
-}
-
-.user{
-    text-align: right;
 }
 
 a.navbar-brand {
@@ -32,32 +55,27 @@ a.navbar-brand {
     font-size: 40px;
 }
 
-body {
-    padding-bottom: 20px;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.btn-info{
-    margin-left: 0.5em;
-}
-
-footer{
-    text-align: center;
-}
-
-footer span{
-    padding-left: 2em;
-    word-spacing: 0.5em;
-}
-
-.nav-item{
+.nav-item {
     margin-right: 25px;
-    text-decoration:none;
+    text-decoration: none;
 }
 
-nav{
+nav {
     padding: 5rem;
 }
+*/
+/*CartButton
+.btn-info {
+    margin-left: 0.5em;
+}
+*/
+/*SignUp/Login/Cart
+.user{
+    text-align: right;
+}
+*/
+
+
 
 /* Hide/rearrange for smaller screens 
 @media screen and (max-width: 767px) {

@@ -5,98 +5,63 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WineTime.Models;
+using WineTime.Data;
 
 namespace WineTime.Controllers
 {
     public class WineListController : Controller
     {
+        public ApplicationDbContext _context;
+
+        public WineListController(ApplicationDbContext context)
+        {
+            this._context = context;
+        }
+
         public IActionResult Index(string category)
         {
-            ViewBag.selectedCategory = category;
-            List<WineProducts> model = new List<WineProducts>();
+            if(_context.WineProducts.Count() == 0)
+            {
+                List<WineProducts> RedWine = new List<WineProducts>();
+                RedWine.Add(new WineProducts { Name = "Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                RedWine.Add(new WineProducts { Name = "2 Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                RedWine.Add(new WineProducts { Name = "3 Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                RedWine.Add(new WineProducts { Name = "4 Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                RedWine.Add(new WineProducts { Name = "5 Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                RedWine.Add(new WineProducts { Name = "6 Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                RedWine.Add(new WineProducts { Name = "7 Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                _context.WineCategories.Add(new WineCategory { Name = "RedWine", WineProduct = RedWine });
 
+                List<WineProducts> WhiteWine = new List<WineProducts>();
+                WhiteWine.Add(new WineProducts { Name = "Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                WhiteWine.Add(new WineProducts { Name = "2 Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                WhiteWine.Add(new WineProducts { Name = "3 Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                WhiteWine.Add(new WineProducts { Name = "4 Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                WhiteWine.Add(new WineProducts { Name = "5 Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                WhiteWine.Add(new WineProducts { Name = "6 Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                WhiteWine.Add(new WineProducts { Name = "7 Barefoot Pinot Grigio", ImagePath = "./images/BarefootPinotGrigio.jpeg", Description = "Tart green apple flavors", Price = 9.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
+                _context.WineCategories.Add(new WineCategory { Name = "WhiteWine", WineProduct = WhiteWine });
+
+                _context.SaveChanges();
+            }
+
+            ViewBag.selectedCategory = category;
+            List<WineProducts> model;
             if (string.IsNullOrEmpty(category))
             {
-                ViewData["Title"] = "All Products";
-                model.Add(new WineProducts
-                {
-                    ID = 1,
-                    Name = "Barefoot Pinot Grigio",
-                    Description = "Tart green apple flavors get down with a white peach undertone. " +
-                    "Floral blossoms and citrus aromas do the tango. Barefoot’s Pinot Grigio is light-bodied with a bright finish.",
-                    ImagePath = "./images/BarefootPinotGrigio.jpeg",
-                    Price = 9.99m
-                });
-                model.Add(new WineProducts
-                {
-                    ID = 2,
-                    Name = "Educated Guess Cabernet Sauvignon",
-                    Description = "The Educated Guess Cabernet Sauvignon is crafted from grapes " +
-                    "grown in the prestigious Napa Valley wine districts of Yountville, Oak Knoll, Calistoga, Oakville, and Rutherford.",
-                    ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg",
-                    Price = 26.99m
-                });
-                model.Add(new WineProducts
-                {
-                    ID = 3,
-                    Name = "Justin Cabernet Sauvignon",
-                    Description = "This big, bold artisanal wine is brought to you by " +
-                    "some of the pioneers of Paso Robles in California's Central Coast. ",
-                    ImagePath = "./images/JustinCabernetSauvignon.jpg",
-                    Price = 34.99m
-                });
-                Console.WriteLine("Get All Products");
+                model = this._context.WineProducts.ToList();
             }
-            else if (category.ToLowerInvariant() == "redwine")
+            else
             {
-                ViewData["Title"] = "Red Wine";
-                model.Add(new WineProducts
-                {
-                    ID = 2,
-                    Name = "Educated Guess Cabernet Sauvignon",
-                    Description = "The Educated Guess Cabernet Sauvignon is crafted from grapes " +
-                    "grown in the prestigious Napa Valley wine districts of Yountville, Oak Knoll, Calistoga, Oakville, and Rutherford.",
-                    ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg",
-                    Price = 26.99m
-                });
-                model.Add(new WineProducts
-                {
-                    ID = 3,
-                    Name = "Justin Cabernet Sauvignon",
-                    Description = "This big, bold artisanal wine is brought to you by " +
-                    "some of the pioneers of Paso Robles in California's Central Coast. ",
-                    ImagePath = "./images/JustinCabernetSauvignon.jpg",
-                    Price = 34.99m
-                });
-                Console.WriteLine("Get Red Wine");
-            }
-            else if (category.ToLowerInvariant() == "whitewine")
-            {
-                ViewData["Title"] = "White Wine";
-                model.Add(new WineProducts
-                {
-                    ID = 1,
-                    Name = "Barefoot Pinot Grigio",
-                    Description = "Tart green apple flavors get down with a white peach undertone" +
-                    "Floral blossoms and citrus aromas do the tango. Barefoot’s Pinot Grigio is light-bodied with a bright finish.",
-                    ImagePath = "./images/BarefootPinotGrigio.jpeg",
-                    Price = 9.99m
-                });
+                model = this._context.WineProducts.Where(x => x.WineCategoryName == category).ToList();
             }
 
+            ViewData["Categories"] = this._context.WineCategories.Select(x => x.Name).ToArray();
             return View(model);
         }
         public IActionResult Details(int? id)
         {
-            WineProducts model = new WineProducts
-            {
-                ID = 1,
-                Name = "Barefoot Pinot Grigio",
-                Description = "Tart green apple flavors get down with a white peach undertone. " +
-                    "Floral blossoms and citrus aromas do the tango. Barefoot’s Pinot Grigio is light-bodied with a bright finish.",
-                ImagePath = "./images/BarefootPinotGrigio.jpeg",
-                Price = 9.99m
-            };
+            WineProducts model = _context.WineProducts.Find(id);
             return View(model);
         }
 

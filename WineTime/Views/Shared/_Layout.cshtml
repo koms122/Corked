@@ -10,35 +10,35 @@
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Styles", required: false)
 </head>
-<body>
-<!-- NavBar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">&#161;Corked</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="WineList" asp-action="Index">Wine List</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="WineList" asp-action="Index" asp-route-category="redWine">Red Wine</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="WineList" asp-action="Index" asp-route-category="whiteWine">White Wine</a>
-                </li>
-            </ul>
-            <span class="user">
-                <a href="signUp">Sign Up</a>|<a href="login">Login</a>
-                <button type="button" class="btn btn-info">&#161;Cart <span class="badge badge-info">0</span></button>
-            </span>
-        </div>
-    </nav>
-    
+<body background="../images/Background.png">
+    <!-- NavBar
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">&#161;Corked</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="WineList" asp-action="Index">Wine List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="WineList" asp-action="Index" asp-route-category="redWine">Red Wine</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="WineList" asp-action="Index" asp-route-category="whiteWine">White Wine</a>
+                    </li>
+                </ul>
+                <span class="user">
+                    <a href="signUp">Sign Up</a>|<a href="login">Login</a>
+                    <button type="button" class="btn btn-info">&#161;Cart <span class="badge badge-info">0</span></button>
+                </span>
+            </div>
+        </nav>
+       -->
     <div class="body-content">
         @RenderBody()
     </div>

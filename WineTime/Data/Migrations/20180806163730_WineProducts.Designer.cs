@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WineTime.Data;
 
 namespace WineTime.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180806163730_WineProducts")]
+    partial class WineProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,34 +182,11 @@ namespace WineTime.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("WineTime.Models.WineCategory", b =>
-                {
-                    b.Property<string>("Name")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100);
-
-                    b.Property<DateTime?>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<DateTime?>("DateLastModified")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("WineCategories");
-                });
-
             modelBuilder.Entity("WineTime.Models.WineProducts", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateLastModified");
 
                     b.Property<string>("Description");
 
@@ -219,11 +198,7 @@ namespace WineTime.Data.Migrations
 
                     b.Property<DateTime>("Schedule");
 
-                    b.Property<string>("WineCategoryName");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("WineCategoryName");
 
                     b.ToTable("WineProducts");
                 });
@@ -271,13 +246,6 @@ namespace WineTime.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WineTime.Models.WineProducts", b =>
-                {
-                    b.HasOne("WineTime.Models.WineCategory", "WineCategory")
-                        .WithMany("WineProduct")
-                        .HasForeignKey("WineCategoryName");
                 });
 #pragma warning restore 612, 618
         }
