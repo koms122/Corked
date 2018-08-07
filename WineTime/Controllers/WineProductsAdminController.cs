@@ -22,7 +22,7 @@ namespace WineTime.Controllers
         // GET: WineProductsAdmin
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WineProducts.ToListAsync());
+            return View(await _context.WineProduct.ToListAsync());
         }
 
         // GET: WineProductsAdmin/Details/5
@@ -33,7 +33,7 @@ namespace WineTime.Controllers
                 return NotFound();
             }
 
-            var wineProducts = await _context.WineProducts
+            var wineProducts = await _context.WineProduct
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (wineProducts == null)
             {
@@ -75,7 +75,7 @@ namespace WineTime.Controllers
                 return NotFound();
             }
 
-            var wineProducts = await _context.WineProducts.FindAsync(id);
+            var wineProducts = await _context.WineProduct.SingleOrDefaultAsync(m => m.ID == id);
             if (wineProducts == null)
             {
                 return NotFound();
@@ -127,7 +127,7 @@ namespace WineTime.Controllers
                 return NotFound();
             }
 
-            var wineProducts = await _context.WineProducts
+            var wineProducts = await _context.WineProduct
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (wineProducts == null)
             {
@@ -142,15 +142,15 @@ namespace WineTime.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var wineProducts = await _context.WineProducts.FindAsync(id);
-            _context.WineProducts.Remove(wineProducts);
+            var wineProducts = await _context.WineProduct.SingleOrDefaultAsync(m => m.ID == id);
+            _context.WineProduct.Remove(wineProducts);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool WineProductsExists(int id)
         {
-            return _context.WineProducts.Any(e => e.ID == id);
+            return _context.WineProduct.Any(e => e.ID == id);
         }
     }
 }

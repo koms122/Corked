@@ -4,19 +4,20 @@
 }
 
 <h2>Index</h2>
-@if (Model.Products.Count == 0)
+@if (Model.WineCartProducts.Count == 0)
 {
     <p>You don't have anything in your cart, <a asp-controller="WineList" asp-action="index">Check out some products</a></p>
 }
 else
 {
     <table class="table">
-        @foreach (var product in Model.Products)
+        @foreach (var product in Model.WineCartProducts)
         {
         <tr>
-            <td>@product.Name</td>
-            <td>@((product.Price ?? 0).ToString("C"))</td>
-            <td>@product.Description</td>
+            <td>@product.WineProducts.Name</td>
+            <td>@((product.WineProducts.Price ?? 0).ToString("C"))</td>
+            <td>@product.WineProducts.Description</td>
+            <td>@product.Quantity</td>
             <td>
                 <form asp-action="remove" method="post">
                     <input type="hidden" name="id" value="@product.ID" />

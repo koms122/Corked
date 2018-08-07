@@ -10,8 +10,13 @@ namespace WineTime.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<WineProducts> WineProducts { get; set; }
+        public DbSet<WineProducts> WineProduct { get; set; }
+
         public DbSet<WineCategory> WineCategories { get; set; }
+
+        public DbSet<WineCart> WineCarts { get; set; }
+
+        public DbSet<WineCartProduct> WineCartProducts { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WineTime.Data;
 
 namespace WineTime.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180807180637_Carts")]
+    partial class Carts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +211,9 @@ namespace WineTime.Data.Migrations
 
                     b.Property<int>("WineCartID");
 
-                    b.Property<int>("WineProductsID");
+                    b.Property<int>("WineProductID");
+
+                    b.Property<int?>("WineProductsID");
 
                     b.HasKey("ID");
 
@@ -245,9 +249,9 @@ namespace WineTime.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("DateCreated");
+                    b.Property<DateTime>("DateCreated");
 
-                    b.Property<DateTime?>("DateLastModified");
+                    b.Property<DateTime>("DateLastModified");
 
                     b.Property<string>("Description");
 
@@ -257,7 +261,7 @@ namespace WineTime.Data.Migrations
 
                     b.Property<decimal?>("Price");
 
-                    b.Property<DateTime?>("Schedule");
+                    b.Property<DateTime>("Schedule");
 
                     b.Property<string>("WineCategoryName");
 
@@ -322,8 +326,7 @@ namespace WineTime.Data.Migrations
 
                     b.HasOne("WineTime.Models.WineProducts", "WineProducts")
                         .WithMany("WineCartProducts")
-                        .HasForeignKey("WineProductsID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("WineProductsID");
                 });
 
             modelBuilder.Entity("WineTime.Models.WineProducts", b =>

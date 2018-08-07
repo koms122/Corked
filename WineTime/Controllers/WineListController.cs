@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WineTime.Models;
 using WineTime.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace WineTime.Controllers
 {
     public class WineListController : Controller
     {
-        public ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         public WineListController(ApplicationDbContext context)
         {
@@ -20,7 +21,7 @@ namespace WineTime.Controllers
 
         public IActionResult Index(string category)
         {
-            if(_context.WineProducts.Count() == 0)
+            if(_context.WineProduct.Count() == 0)
             {
                 List<WineProducts> RedWine = new List<WineProducts>();
                 RedWine.Add(new WineProducts { Name = "Educated Guess Cabernet Sauvignon", ImagePath = "./images/EducatedGuessCabernetSauvignon.jpeg", Description = "Grown in the prestigious Napa Valley", Price = 26.99m, DateCreated = DateTime.Now, DateLastModified = DateTime.Now });
@@ -49,11 +50,11 @@ namespace WineTime.Controllers
             List<WineProducts> model;
             if (string.IsNullOrEmpty(category))
             {
-                model = this._context.WineProducts.ToList();
+                model = this._context.WineProduct.ToList();
             }
             else
             {
-                model = this._context.WineProducts.Where(x => x.WineCategoryName == category).ToList();
+                model = this._context.WineProduct.Where(x => x.WineCategoryName == category).ToList();
             }
 
             ViewData["Categories"] = this._context.WineCategories.Select(x => x.Name).ToArray();
@@ -61,7 +62,7 @@ namespace WineTime.Controllers
         }
         public IActionResult Details(int? id)
         {
-            WineProducts model = _context.WineProducts.Find(id);
+            WineProducts model = _context.WineProduct.Find(id);
             return View(model);
         }
 
@@ -69,7 +70,54 @@ namespace WineTime.Controllers
         public IActionResult Details(int? id, int quantity, string color)
         {
             // TODO: Take the Posted details and update the user's cart
-            Console.WriteLine("User added " + id.ToString() + " , " + quantity.ToString() + ", " + color);
+            WineCart cart = null;
+            if(Request.Cookies.ContainsKey("cart_id")) // Make sure that cart_id is consistent throughout the app
+            {
+                //peel the cart_id out of the cookie
+                int existingCartID = int.Parse(Request.Cookies["cart_id"]);
+                //see if the cart exists:
+                // Using EF.Core (to join Carts and Products)
+                // If I don't use "Include", cart won't return products even if it's in the database
+                cart = _context.WineCarts.Include(x => x.WineCartProducts).FirstOrDefault(x => x.ID == existingCartID);
+                cart.DateLastModified = DateTime.Now;
+            }
+
+            if(cart == null)
+            {
+                cart = new WineCart
+                {
+                    DateCreated = DateTime.Now,
+                    DateLastModified = DateTime.Now
+                };
+                _context.WineCarts.Add(cart);
+            }
+            //At this point, no matter what, it'll either be a newly created cart or an existing cart
+
+            // Find the first product in the cart with the product ID we're looking for
+            // If none exists, return "NULL"
+            WineCartProduct product = cart.WineCartProducts.FirstOrDefault(x => x.WineProductsID == id);
+            if(product == null)
+            {
+                product = new WineCartProduct
+                {
+                    DateLastModified = DateTime.Now,
+                    DateCreated = DateTime.Now,
+                    WineProductsID = id ?? 0,
+                    Quantity = 0,
+                };
+                cart.WineCartProducts.Add(product);
+            }
+            product.Quantity += quantity;
+            product.DateLastModified = DateTime.Now;
+
+            _context.SaveChanges();
+
+            Response.Cookies.Append("cart_id", cart.ID.ToString(), new Microsoft.AspNetCore.Http.CookieOptions
+            {
+                //Cookie expires in a year -- so the cart will stay existing for a year
+                Expires = DateTime.Now.AddYears(1)
+            });
+
             return RedirectToAction("Index", "Cart");
         }
 
