@@ -19,5 +19,7 @@ namespace WineTime.Models
         public ICollection<WineCartProduct> WineCartProducts { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateLastModified { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserID { get; set; }
     }   
 }

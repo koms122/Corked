@@ -43,9 +43,9 @@ footer span {
     list-style: none;
 }
 
-/*Navbar
+/*Navbar*/
 .navbar-light .navbar-brand {
-    color: goldenrod;
+    color: #BF1378;
     margin-left: 65px;
     margin-right: 50px;
 }
@@ -63,17 +63,16 @@ a.navbar-brand {
 nav {
     padding: 5rem;
 }
-*/
-/*CartButton
+
+/*CartButton*/
 .btn-info {
     margin-left: 0.5em;
 }
-*/
-/*SignUp/Login/Cart
+
+/*SignUp/Login/Cart*/
 .user{
     text-align: right;
 }
-*/
 
 
 

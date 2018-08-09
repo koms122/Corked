@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 using WineTime.Models;
 using WineTime.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace WineTime.Controllers
 {
     public class WineListController : Controller
     {
         private ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public WineListController(ApplicationDbContext context)
+        public WineListController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             this._context = context;
+            this._userManager = userManager;
         }
 
         public IActionResult Index(string category)
@@ -66,31 +69,45 @@ namespace WineTime.Controllers
             return View(model);
         }
 
+        //change add to cart logic for anonymous users and the applicationuser for signed in users
         [HttpPost]
         public IActionResult Details(int? id, int quantity, string color)
         {
             // TODO: Take the Posted details and update the user's cart
             WineCart cart = null;
-            if(Request.Cookies.ContainsKey("cart_id")) // Make sure that cart_id is consistent throughout the app
+            //how you can tell if someone's logged in
+            if(User.Identity.IsAuthenticated)
             {
-                //peel the cart_id out of the cookie
-                int existingCartID = int.Parse(Request.Cookies["cart_id"]);
-                //see if the cart exists:
-                // Using EF.Core (to join Carts and Products)
-                // If I don't use "Include", cart won't return products even if it's in the database
-                cart = _context.WineCarts.Include(x => x.WineCartProducts).FirstOrDefault(x => x.ID == existingCartID);
-                cart.DateLastModified = DateTime.Now;
+                //Authenticated path
+                var currentUser =_userManager.GetUserAsync(User).Result;
+                //grabs hold of the current users' winecart and fetches a 
+                cart = _context.WineCarts.Include(x => x.WineCartProducts).Single(x => x.ID == currentUser.WineCartID);
+            
             }
-
-            if(cart == null)
+            else
             {
-                cart = new WineCart
+                if (Request.Cookies.ContainsKey("cart_id")) // Make sure that cart_id is consistent throughout the app
                 {
-                    DateCreated = DateTime.Now,
-                    DateLastModified = DateTime.Now
-                };
-                _context.WineCarts.Add(cart);
+                    //peel the cart_id out of the cookie
+                    int existingCartID = int.Parse(Request.Cookies["cart_id"]);
+                    //see if the cart exists:
+                    // Using EF.Core (to join Carts and Products)
+                    // If I don't use "Include", cart won't return products even if it's in the database
+                    cart = _context.WineCarts.Include(x => x.WineCartProducts).FirstOrDefault(x => x.ID == existingCartID);
+                    cart.DateLastModified = DateTime.Now;
+                }
+
+                if (cart == null)
+                {
+                    cart = new WineCart
+                    {
+                        DateCreated = DateTime.Now,
+                        DateLastModified = DateTime.Now
+                    };
+                    _context.WineCarts.Add(cart);
+                }
             }
+            
             //At this point, no matter what, it'll either be a newly created cart or an existing cart
 
             // Find the first product in the cart with the product ID we're looking for
@@ -112,14 +129,15 @@ namespace WineTime.Controllers
 
             _context.SaveChanges();
 
-            Response.Cookies.Append("cart_id", cart.ID.ToString(), new Microsoft.AspNetCore.Http.CookieOptions
+            if(!User.Identity.IsAuthenticated)
             {
-                //Cookie expires in a year -- so the cart will stay existing for a year
-                Expires = DateTime.Now.AddYears(1)
-            });
-
+                Response.Cookies.Append("cart_id", cart.ID.ToString(), new Microsoft.AspNetCore.Http.CookieOptions
+                {
+                    //Cookie expires in a year -- so the cart will stay existing for a year
+                    Expires = DateTime.Now.AddYears(1)
+                });
+            }
             return RedirectToAction("Index", "Cart");
         }
-
     }
 }

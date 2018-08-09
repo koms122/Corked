@@ -9,5 +9,21 @@ namespace WineTime.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        //EF requires two constructors
+        public ApplicationUser() : base()
+        {
+            this.WineCart = new WineCart();
+        }
+
+        public ApplicationUser(string userName) : base(userName)
+
+        {
+            this.WineCart = new WineCart();
+        }
+        
+        // associates a cart with each user and each user with a cart
+        public WineCart WineCart { get; set; }
+        public int WineCartID { get; set; }
+
     }
 }

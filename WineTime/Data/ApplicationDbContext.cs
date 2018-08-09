@@ -38,6 +38,9 @@ namespace WineTime.Data
             builder.Entity<WineCategory>().Property(x => x.DateCreated).HasDefaultValueSql("GetDate()");
             builder.Entity<WineCategory>().Property(x => x.DateLastModified).HasDefaultValueSql("GetDate()");
             builder.Entity<WineCategory>().Property(x => x.Name).HasMaxLength(100);
+
+            builder.Entity<ApplicationUser>().HasOne(x => x.WineCart).WithOne(x => x.ApplicationUser)
+                .HasForeignKey<WineCart>(x => x.ApplicationUserID);
         }
     }
 }

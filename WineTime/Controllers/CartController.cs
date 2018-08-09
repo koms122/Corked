@@ -6,25 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using WineTime.Models;
 using WineTime.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace WineTime.Controllers
 {
     public class CartController : Controller
     {
+        private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext _context;
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
         public IActionResult Index()
         {
             WineCart model = null;
-            if (Request.Cookies.ContainsKey("cart_id"))
+            if (User.Identity.IsAuthenticated)
+            {
+                var currentUser = _userManager.GetUserAsync(User).Result;
+                model = _context.WineCarts.Include(x => x.WineCartProducts).Single(x => x.ID == currentUser.WineCartID);
+            }
+            else if (Request.Cookies.ContainsKey("cart_id"))
             {
                 int existingCartID = int.Parse(Request.Cookies["cart_id"]);
-                model = _context.WineCarts.Include(x => x.WineCartProducts).ThenInclude(x => x.WineProducts).FirstOrDefault(x => x.ID == existingCartID);
+                model = _context.WineCarts.Include(x => x.WineCartProducts)
+                    .ThenInclude(x => x.WineProducts).FirstOrDefault(x => x.ID == existingCartID);
             }
             else
+
             {
                 model = new WineCart();
             }
