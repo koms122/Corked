@@ -18,6 +18,10 @@ namespace WineTime.Data
 
         public DbSet<WineCartProduct> WineCartProducts { get; set; }
 
+        public DbSet<WineOrder> WineOrders { get; set; }
+
+        public DbSet<WineOrderProduct> WineOrderProducts { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

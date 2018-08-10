@@ -12,7 +12,7 @@ namespace WineTime.Models
         public int WineCartID { get; set; }
         public WineProducts WineProducts { get; set; }
         public int WineProductsID { get; set; }
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? DateLastModified { get; set; }
     }

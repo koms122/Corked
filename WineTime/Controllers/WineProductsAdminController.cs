@@ -10,6 +10,8 @@ using WineTime.Models;
 
 namespace WineTime.Controllers
 {
+    // this allows only those that have the role of an admin to access this page
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Administrator")]
     public class WineProductsAdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,9 +22,25 @@ namespace WineTime.Controllers
         }
 
         // GET: WineProductsAdmin
+        // declarative security: Do either this or the imperative security; does the same thing;
+        //'authorize' by default takes you to the login page; you can edit it in the startup.cs to change the default behavior
+        // This allows any user that is logged in to access the page. Instead, a declarative security was put at the top 
+        //              right under namespace to only let those with a role of an admin access the page
+        // [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.WineProduct.ToListAsync());
+
+            // imperative security: if/else statement where do one thing if they're logged in and another if they're not
+            // pick either imperative or declarative
+            //if(User.Identity.IsAuthenticated)
+            //{ 
+            //    return View(await _context.WineProduct.ToListAsync());
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
         }
 
         // GET: WineProductsAdmin/Details/5

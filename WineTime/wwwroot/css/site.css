@@ -69,8 +69,13 @@ nav {
     margin-left: 0.5em;
 }
 
+.fa-shopping-cart:before {
+    font-size: 2.5em;
+    color: #BF1378;
+}
+
 /*SignUp/Login/Cart*/
-.user{
+.user {
     text-align: right;
 }
 

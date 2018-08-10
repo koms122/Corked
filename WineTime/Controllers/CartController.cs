@@ -25,7 +25,7 @@ namespace WineTime.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var currentUser = _userManager.GetUserAsync(User).Result;
-                model = _context.WineCarts.Include(x => x.WineCartProducts).Single(x => x.ID == currentUser.WineCartID);
+                model = _context.WineCarts.Include(x => x.WineCartProducts).ThenInclude(x => x.WineProducts).Single(x => x.ApplicationUserID == currentUser.Id);
             }
             else if (Request.Cookies.ContainsKey("cart_id"))
             {
@@ -34,7 +34,6 @@ namespace WineTime.Controllers
                     .ThenInclude(x => x.WineProducts).FirstOrDefault(x => x.ID == existingCartID);
             }
             else
-
             {
                 model = new WineCart();
             }

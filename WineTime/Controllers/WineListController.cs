@@ -73,16 +73,22 @@ namespace WineTime.Controllers
         [HttpPost]
         public IActionResult Details(int? id, int quantity, string color)
         {
-            // TODO: Take the Posted details and update the user's cart
             WineCart cart = null;
             //how you can tell if someone's logged in
             if(User.Identity.IsAuthenticated)
             {
                 //Authenticated path
                 var currentUser =_userManager.GetUserAsync(User).Result;
-                //grabs hold of the current users' winecart and fetches a 
-                cart = _context.WineCarts.Include(x => x.WineCartProducts).Single(x => x.ID == currentUser.WineCartID);
-            
+                //grabs hold of the current users' winecart
+                cart = _context.WineCarts.Include(x => x.WineCartProducts).FirstOrDefault(x => x.ApplicationUserID == currentUser.Id);
+                if(cart == null)
+                {
+                    cart = new WineCart();
+                    cart.ApplicationUserID = currentUser.Id;
+                    cart.DateCreated = DateTime.Now;
+                    cart.DateLastModified = DateTime.Now;
+                    _context.WineCarts.Add(cart);
+                }
             }
             else
             {
@@ -139,5 +145,6 @@ namespace WineTime.Controllers
             }
             return RedirectToAction("Index", "Cart");
         }
+
     }
 }
