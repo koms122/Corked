@@ -218,9 +218,14 @@ namespace WineTime.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            if(model.BirthDate.AddYears(21) > DateTime.Today)
+            {
+                ModelState.AddModelError("BirthDate", "You'll have to wait a while...");
+            }
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { FirstName = model.FirstName, LastName = model.LastName, BirthDate = model.BirthDate, UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

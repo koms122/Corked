@@ -36,8 +36,18 @@ namespace WineTime
           
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender>((iServiceProvider) => new EmailSender(Configuration.GetValue<string>("SendGrid.ApiKey")));
 
+            //environment, merchantid, publickey, privatekey has to be in the same order!!!
+            services.AddTransient<Braintree.IBraintreeGateway>((iServiceProvider) => new Braintree.BraintreeGateway(
+                Configuration.GetValue<string>("Braintree.Environment"), 
+                Configuration.GetValue<string>("Braintree.MerchantId"),
+                Configuration.GetValue<string>("Braintree.PublicKey"),
+                Configuration.GetValue<string>("Braintree.PrivateKey")
+                ));
+
+            services.AddTransient<System.Data.SqlClient.SqlConnection>((x) => new System.Data.SqlClient.SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddMvc();
         }
 
@@ -68,11 +78,11 @@ namespace WineTime
 
             //Adding the admin role
 
-            var roleManager = services.GetService<RoleManager<IdentityRole>>();
-            if (!roleManager.Roles.Any(x => x.Name == "Administrator"))
-            {
-                roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
-            }
+            //var roleManager = services.GetService<RoleManager<IdentityRole>>();
+            //if (!roleManager.Roles.Any(x => x.Name == "Administrator"))
+            //{
+            //    roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
+            //}
             
         }
     }

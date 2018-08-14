@@ -2,39 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using WineTime.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using WineTime.Data;
+using WineTime.Models;
+using WineTime.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Braintree;
 
 namespace WineTime.Controllers
 {
     public class CheckoutController : Controller
     {
+        //inject
         private UserManager<ApplicationUser> _userManager;
         private ApplicationDbContext _context;
+        private IEmailSender _emailSender;
+        private IBraintreeGateway _braintreeGateway;
 
-        public CheckoutController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CheckoutController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IBraintreeGateway braintreeGateway)
         {
             _userManager = userManager;
             _context = context;
+            _emailSender = emailSender;
+            _braintreeGateway = braintreeGateway;
         }
 
-        public IActionResult Index()
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
             CheckoutModel model = new CheckoutModel();
             if (User.Identity.IsAuthenticated)
             {
-                var currentUser = _userManager.GetUserAsync(User).Result;
+                var currentUser = await _userManager.GetUserAsync(User);
                 model.Email = currentUser.Email;
             }
+
+            ViewBag.ClientAuthorization = await _braintreeGateway.ClientToken.GenerateAsync();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(CheckoutModel model)
+        public async Task<IActionResult> Index(CheckoutModel model, string nonce)
         {
             if (ModelState.IsValid)
             {
@@ -85,6 +96,15 @@ namespace WineTime.Controllers
 
                 _context.WineOrders.Add(order);
                 _context.SaveChanges();
+
+                var result = await _braintreeGateway.Transaction.SaleAsync(new TransactionRequest
+                {
+                    Amount = order.WineOrderProducts.Sum(x => x.Quantity * x.ProductPrice),
+                    PaymentMethodNonce = nonce
+                });
+
+                await _emailSender.SendEmailAsync(model.Email, "Your order " + order.ID, "Thanks for ordering! You bought : " + String.Join(",", order.WineOrderProducts.Select(x => x.ProductName)));
+
                 //TODO: Save this information to the database so we can ship the order
                 return RedirectToAction("Index", "Receipt", new { id = order.ID });
             }

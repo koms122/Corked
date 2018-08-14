@@ -24,6 +24,9 @@ namespace WineTime.Models
         // associates a cart with each user and each user with a cart
         public WineCart WineCart { get; set; }
         public int WineCartID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime BirthDate { get; set; }
 
     }
 }
