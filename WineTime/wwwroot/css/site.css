@@ -10,6 +10,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     color: goldenrod;
     height: 100%;
+    background-color: #400628;
 }
 
 div.mainHomeParent {
@@ -24,7 +25,10 @@ div .mainHomeChild {
     vertical-align: middle;
     line-height: normal;
 }
-
+/*Links*/
+a{
+    color: papayawhip;
+}
 /*Footer*/
 .footer {
     display: flex;
@@ -44,13 +48,10 @@ footer span {
 }
 
 /*Navbar*/
-.navbar-light .navbar-brand {
+.navbar-brand {
     color: #BF1378;
     margin-left: 65px;
     margin-right: 50px;
-}
-
-a.navbar-brand {
     font-family: 'Lobster Two', cursive;
     font-size: 40px;
 }
@@ -80,7 +81,9 @@ nav {
 .user {
     text-align: right;
 }
-
+.usernav{
+    margin-right: 0.75em;
+}
 
 
 /* Hide/rearrange for smaller screens 

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Braintree;
+using SmartyStreets.USStreetApi;
 
 namespace WineTime.Controllers
 {
@@ -20,13 +21,16 @@ namespace WineTime.Controllers
         private ApplicationDbContext _context;
         private IEmailSender _emailSender;
         private IBraintreeGateway _braintreeGateway;
+        //SmartyStreets API called it "Client"
+        private Client _client;
 
-        public CheckoutController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IBraintreeGateway braintreeGateway)
+        public CheckoutController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IBraintreeGateway braintreeGateway, Client client)
         {
             _userManager = userManager;
             _context = context;
             _emailSender = emailSender;
             _braintreeGateway = braintreeGateway;
+            _client = client;
         }
 
         [Authorize]
@@ -100,7 +104,17 @@ namespace WineTime.Controllers
                 var result = await _braintreeGateway.Transaction.SaleAsync(new TransactionRequest
                 {
                     Amount = order.WineOrderProducts.Sum(x => x.Quantity * x.ProductPrice),
-                    PaymentMethodNonce = nonce
+                    PaymentMethodNonce = model.Nonce,
+                    LineItems = order.WineOrderProducts.Select(x => new TransactionLineItemRequest
+                    {
+                        Description = x.ProductDescription,
+                        Name = x.ProductName,
+                        Quantity = x.Quantity,
+                        ProductCode = x.ProductID.Value.ToString(),
+                        UnitAmount = x.ProductPrice,
+                        TotalAmount = x.ProductPrice * x.Quantity,
+                        LineItemKind = TransactionLineItemKind.DEBIT
+                    }).ToArray()
                 });
 
                 await _emailSender.SendEmailAsync(model.Email, "Your order " + order.ID, "Thanks for ordering! You bought : " + String.Join(",", order.WineOrderProducts.Select(x => x.ProductName)));
@@ -111,5 +125,21 @@ namespace WineTime.Controllers
             //TODO: we have an error!  Redisplay the form!
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ValidateAddress([FromBody]Lookup lookup)
+        {
+            try
+            {
+                _client.Send(lookup);
+                return Json(lookup);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }
     }
+
 }

@@ -107,11 +107,14 @@
                 <option value="WY">Wyoming</option>
             </select>
         </div>
-
         <div class="form-group">
             <label asp-for="ZipCode">Zip Code</label>
             <input type="text" asp-for="ZipCode" class="form-control" required />
         </div>
+        <div class="form-group">
+            <button class="btn btn-secondary" id="validateAddress" disabled>Validate Address</button>
+        </div>
+
         <h4>Payment Information</h4>
         <div class="form-group">
             <label for="card-number">Card Number</label>
@@ -131,7 +134,8 @@
         </div>
 
         <input type="hidden" name="nonce" class="nonce" />
-        <input type="submit" class="btn btn-primary" value="Submit Order" />
+        @*Disabled so that you cannot submit the order if everything is not filled out*@
+        <input type="submit" class="btn btn-primary" disabled value="Submit Order" />
     </form>
 
 
@@ -201,5 +205,47 @@
           }, false);
         });
       });
+
+        $(document).ready(() => {
+            $('#validateAddress').click((e) => {
+                e.preventDefault();
+                var lookup = {
+                    Street: $("#StreetAddress").removeClass("is-valid").removeClass("is-invalid").val(),
+                    City: $("#City").removeClass("is-valid").removeClass("is-invalid").val(),
+                    State: $("#State").removeClass("is-valid").removeClass("is-invalid").val(),
+                    ZipCode: $("#ZipCode").removeClass("is-valid").removeClass("is-invalid").val()
+                };
+                $('#validateAddress').attr("disabled");
+
+                jQuery.ajax({
+                    url: "/checkout/validateaddress",
+                    type: "POST",
+                    data: JSON.stringify(lookup),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        console.log(data);
+                        $("#StreetAddress").addClass("is-valid").val(data.delivery_line_1);
+                        $("#City").addClass("is-valid").val(data.components.city_name);
+                        $("#State").addClass("is-valid").val(data.components.state_abbreviation);
+                        $("#ZipCode").addClass("is-valid").val(data.components.zipcode + "-" + data.components.plus4_code);
+
+                    })
+                    .fail((data, textStates, jqXHR) => {
+                        $("#StreetAddress").addClass("is-invalid");
+                        $("#City").addClass("is-invalid");
+                        $("#State").addClass("is-invalid");
+                        $("#ZipCode").addClass("is-invalid");
+                        console.log(data);
+                    })
+                    .always(() => {
+                        $('#validateAddress').removeAttr("disabled");
+                    });
+            }).removeAttr("disabled");
+
+        });
+
+
     </script>
 }

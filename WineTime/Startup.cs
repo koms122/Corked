@@ -28,6 +28,8 @@ namespace WineTime
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                //Use this when publishing to Azure
+                //options.UseInMemoryDatabase("Default"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -47,7 +49,16 @@ namespace WineTime
                 ));
 
             services.AddTransient<System.Data.SqlClient.SqlConnection>((x) => new System.Data.SqlClient.SqlConnection(Configuration.GetConnectionString("DefaultConnection")));
-            
+
+            services.AddTransient<SmartyStreets.USStreetApi.Client>((iSP) =>
+            {
+                SmartyStreets.ClientBuilder clientBuilder = new SmartyStreets.ClientBuilder(
+                    Configuration.GetValue<string>("SmartyStreets.AuthId"),
+                    Configuration.GetValue<string>("SmartyStreets.Token")
+                );
+                return clientBuilder.BuildUsStreetApiClient();
+            });
+
             services.AddMvc();
         }
 
@@ -64,6 +75,8 @@ namespace WineTime
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 

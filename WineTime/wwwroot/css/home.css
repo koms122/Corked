@@ -1,7 +1,5 @@
-﻿/*.homePic{
-    text-align: center;
+﻿.carousel-inner img {
+    width: 100%;
+    height: 80vh;
 }
-.theHomePic {
-    width: 540px;
-    height: auto;
-}*/
+

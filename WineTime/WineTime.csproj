@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-WineTime-F7933BA0-0A4B-4870-AB71-FEA22D1585EF</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180815190438_newcategories.cs" />
+    <Compile Remove="Data\Migrations\20180815190438_newcategories.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180815191352_newcategories.cs" />
+    <Compile Remove="Data\Migrations\20180815191352_newcategories.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Braintree" Version="4.5.0" />
@@ -12,6 +19,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" PrivateAssets="All" />
     <PackageReference Include="Sendgrid" Version="9.9.0" />
+    <PackageReference Include="smartystreets-dotnet-sdk" Version="8.0.13" />
     <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
   </ItemGroup>
 
