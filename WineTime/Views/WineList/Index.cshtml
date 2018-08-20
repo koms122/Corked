@@ -2,6 +2,8 @@
 
 @section Styles{
     <link href="~/css/wine.css" rel="stylesheet" />
+    <link href="bootstrap.min.css" rel="stylesheet">
+
 }
 
 <form>
@@ -10,12 +12,12 @@
             <label for="category">Category:</label>
             <select name="category" class="form-control">
                 <option value="">All Products</option>
-                <option value="redWine">Red Wine</option>
-                <option value="whiteWine">White Wine</option>
-                <option value="rose">Rose</option>
-                <option value="champagne">Champagne</option>
-                <option value="cabernetSauvignon">Cabernet Sauvignon</option>
-                <option value="Chardonnay">Chardonnay</option>
+                <option value="redWine">RED WINE</option>
+                <option value="whiteWine">WHITE WINE</option>
+                <option value="rose">ROSE</option>
+                <option value="champagne">CHAMPAGNE</option>
+                <option value="cabernetSauvignon">CABERNET SAUVIGNON</option>
+                <option value="Chardonnay">CHARDONNAY</option>
             </select>
         </div>
         <div class="form-group col-5">
@@ -33,13 +35,18 @@
 </form>
 
 
-<div class="row">
+<div class="card-deck">
     @foreach (var product in Model)
     {
-        <h1>@product.Name</h1>
-        <p>@product.Description</p>
-        <img src="@product.ImagePath" alt=" =@product.Name" />
-        <p>@(product.Price.HasValue ? product.Price.Value.ToString("c") : "No Price")</p>
-        <a asp-controller="WineList" asp-action="Details" asp-route-id="@product.ID" class="btn btn-secondary">View Details</a>
+        <div class="card bg-light mb-3" style="width: 18rem;">
+            <img class="card-img-top" src="@product.ImagePath" alt="@product.Name" style="width:300px; height:400px">
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">@product.Description</p>
+                <p class="card-text">@(product.Price.HasValue ? product.Price.Value.ToString("c") : "No Price")</p>
+                <a asp-controller="WineList" asp-action="Details" asp-route-id="@product.ID" class="btn btn-secondary">View Details</a>
+            </div>
+
+        </div>
     }
 </div>

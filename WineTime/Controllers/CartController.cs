@@ -40,10 +40,35 @@ namespace WineTime.Controllers
             return View(model);
         }
 
-        public IActionResult Remove(int id)
+        public async Task<IActionResult> Remove(int id)
         {
-            // TODO: Look through the cart items and remove the prodcut with that ID
-            return RedirectToAction("Index");
+            WineCart cart = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                cart = await _context.WineCarts.Include(x => x.WineCartProducts).FirstOrDefaultAsync(x => x.ApplicationUserID == currentUser.Id);
+            }
+            else
+            {
+                if (Request.Cookies.ContainsKey("cart_id"))
+                {
+                    int existingCartID = int.Parse(Request.Cookies["cart_id"]);
+                    cart = await _context.WineCarts.Include(x => x.WineCartProducts).FirstOrDefaultAsync(x => x.ID == existingCartID);
+                    cart.DateLastModified = DateTime.Now;
+                }
+            }
+
+            WineCartProduct product = cart.WineCartProducts.FirstOrDefault(x => x.ID == id);
+            cart.WineCartProducts.Remove(product);
+            await _context.SaveChangesAsync();
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Cookies.Append("cart_id", cart.ID.ToString(), new Microsoft.AspNetCore.Http.CookieOptions
+                {
+                    Expires = DateTime.Now.AddYears(1)
+                });
+            }
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

@@ -22,5 +22,6 @@ namespace WineTime.Models
         public DateTime? DateCreated { get; set; }
         public DateTime? DateLastModified { get; set; }
         public ICollection<WineOrderProduct> WineOrderProducts { get; set; }
+        public DateTime? PaidDate { get; set; }
     }
 }

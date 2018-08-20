@@ -43,13 +43,12 @@ namespace WineTime.Controllers
                 model.Email = currentUser.Email;
             }
 
-            ViewBag.ClientAuthorization = await _braintreeGateway.ClientToken.GenerateAsync();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(CheckoutModel model, string nonce)
+        public IActionResult Index(CheckoutModel model)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +61,8 @@ namespace WineTime.Controllers
                     AptSuite = model.AptSuite,
                     ZipCode = model.ZipCode,
                     DateCreated = DateTime.Now,
-                    DateLastModified = DateTime.Now
+                    DateLastModified = DateTime.Now,
+                    PaidDate = (DateTime?)null
                 };
 
                 WineCart cart = null;
@@ -100,12 +100,34 @@ namespace WineTime.Controllers
 
                 _context.WineOrders.Add(order);
                 _context.SaveChanges();
+                return RedirectToAction("Payment", new { id = order.ID });
+            }
+            return View();
+        }
 
+        public async Task<IActionResult> Payment(Guid id)
+        {
+            PaymentModel model = new PaymentModel();
+            model.ID = id;
+            model.Order = await _context.WineOrders.Include(x => x.WineOrderProducts).FirstOrDefaultAsync(x => x.ID == id);
+            //TODO: Save this information to the database so we can ship the order
+            ViewBag.ClientAuthorization = await _braintreeGateway.ClientToken.GenerateAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Payment(PaymentModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Order = await _context.WineOrders.Include(x => x.WineOrderProducts).FirstOrDefaultAsync(x => x.ID == model.ID);
                 var result = await _braintreeGateway.Transaction.SaleAsync(new TransactionRequest
                 {
-                    Amount = order.WineOrderProducts.Sum(x => x.Quantity * x.ProductPrice),
+                    Amount = model.Order.WineOrderProducts.Sum(x => x.Quantity * x.ProductPrice),
                     PaymentMethodNonce = model.Nonce,
-                    LineItems = order.WineOrderProducts.Select(x => new TransactionLineItemRequest
+                    LineItems = model.Order.WineOrderProducts.Select(x => new TransactionLineItemRequest
                     {
                         Description = x.ProductDescription,
                         Name = x.ProductName,
@@ -116,14 +138,14 @@ namespace WineTime.Controllers
                         LineItemKind = TransactionLineItemKind.DEBIT
                     }).ToArray()
                 });
-
-                await _emailSender.SendEmailAsync(model.Email, "Your order " + order.ID, "Thanks for ordering! You bought : " + String.Join(",", order.WineOrderProducts.Select(x => x.ProductName)));
-
+                await _emailSender.SendEmailAsync(model.Order.Email, "Your order " + model.ID, "Thanks for ordering! You bought : " + String.Join(",", model.Order.WineOrderProducts.Select(x => x.ProductName)));
+                model.Order.PaidDate = DateTime.Now;
+                await _context.SaveChangesAsync();
                 //TODO: Save this information to the database so we can ship the order
-                return RedirectToAction("Index", "Receipt", new { id = order.ID });
+                return RedirectToAction("Index", "Receipt", new { id = model.ID });
             }
-            //TODO: we have an error!  Redisplay the form!
-            return View();
+            return View(model);
+            
         }
 
         [HttpPost]

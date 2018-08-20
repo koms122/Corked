@@ -3,3 +3,10 @@
     height: 80vh;
 }
 
+.btn-primary {
+    color: #fff;
+    background-color: #400628;
+    border-color: #290609;
+    padding-left: 2em;
+    padding-right: 2em;
+}

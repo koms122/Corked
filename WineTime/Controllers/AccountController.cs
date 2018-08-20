@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WineTime.Data;
 using WineTime.Models;
 using WineTime.Models.AccountViewModels;
 using WineTime.Services;
@@ -24,17 +26,20 @@ namespace WineTime.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, 
+            Data.ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -64,6 +69,8 @@ namespace WineTime.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    await ChangeCartOwner(user);
                     _logger.LogInformation("User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
@@ -212,6 +219,22 @@ namespace WineTime.Controllers
             return View();
         }
 
+        private async Task<bool> ChangeCartOwner(ApplicationUser user)
+        {
+            WineCart model = null;
+
+            if (Request.Cookies.ContainsKey("cart_id"))
+            {
+                int existingCartID = int.Parse(Request.Cookies["cart_id"]);
+                model = await _context.WineCarts.FirstOrDefaultAsync(x => x.ID == existingCartID);
+                model.ApplicationUserID = user.Id;
+                await _context.SaveChangesAsync();
+                Response.Cookies.Delete("cart_id");
+                return true;
+            }
+            return false;
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -236,6 +259,7 @@ namespace WineTime.Controllers
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    await ChangeCartOwner(user);
                     _logger.LogInformation("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }

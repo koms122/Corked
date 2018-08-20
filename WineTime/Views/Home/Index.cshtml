@@ -4,9 +4,11 @@
 
 @section Styles{
     <link href="~/css/home.css" rel="stylesheet" />
+    <link href="bootstrap.min.css" rel="stylesheet">
+
 }
 
-
+<!-- Carousel -->
 <div class="container-fluid">
     <div data-ride="car" class="carousel slide" id="carousel">
         <ul class="carousel-indicators">
@@ -16,18 +18,19 @@
         </ul>
         <div class="carousel-inner">
             <div class="active carousel-item">
-                <img alt="Corked" src="~/images/HomePagePic.jpg">
+                <img alt="Corked" src="~/images/HomePagePic.jpg" /><a asp-controller="WineList" asp-action="Index"></a>
             </div>
             <div class="carousel-item">
                 <img alt="ShopNow" src="~/images/HomePagePic.jpg">
                 <div class="carousel-caption">
-                    <h2>Shop Now</h2>
+                    <p><a class="btn btn-lg btn-primary" role="button" asp-controller="WineList" asp-action="Index">SHOP NOW!</a></p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img alt="FinerThingsClub" src="~/images/HomePagePic.jpg">
                 <div class="carousel-caption">
-                    <h2>Join The Finer Things Club Today!</h2>
+                    <!-- Change asp-controller once the controller is made -->
+                    <p><a class="btn btn-lg btn-primary" role="button" asp-controller="WineList" asp-action="Index">Join the Finer Things Club Today!</a></p>
                 </div>
             </div>
         </div>

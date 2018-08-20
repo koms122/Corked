@@ -1,0 +1,122 @@
+﻿@model PaymentModel
+@{
+    ViewData["Title"] = "Payment";
+}
+
+@if (!this.ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in (this.ViewData.ModelState.Where(x => x.Value.Errors.Count > 0).Select(x => x.Value.Errors)))
+            {
+                @foreach (var message in error)
+                {
+                    <li>@message.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+
+}
+<form method="post" class="payment">
+    <h4>Payment Information</h4>
+    <div class="form-group">
+        <label for="card-number">Card Number</label>
+        <div id="card-number" class="form-control"></div>
+    </div>
+    <div class="form-group">
+        <label for="cvv">CVV</label>
+        <div id="cvv" class="form-control"></div>
+    </div>
+    <div class="form-group">
+        <label for="expiration-date">Expiration Date</label>
+        <div id="expiration-date" class="form-control"></div>
+    </div>
+    <div class="form-group">
+        <label for="postal-code">Postal Code</label>
+        <div id="postal-code" class="form-control"></div>
+    </div>
+
+    <input type="hidden" asp-for="Nonce" class="nonce" />
+    @*Disabled so that you cannot submit the order if everything is not filled out*@
+    <input type="submit" class="btn btn-primary" disabled value="Submit Order" />
+</form>
+
+
+
+@section Scripts{
+    <script type="text/javascript"></script>
+    <script src="https://js.braintreegateway.com/web/3.35.0/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.35.0/js/hosted-fields.min.js"></script>
+    <script>
+      var form = document.querySelector('form.payment');
+      var submit = document.querySelector('input[type="submit"]');
+
+      braintree.client.create({
+        authorization: '@ViewBag.ClientAuthorization'
+      }, function (clientErr, clientInstance) {
+        if (clientErr) {
+          console.error(clientErr);
+          return;
+        }
+
+        // This example shows Hosted Fields, but you can also use this
+        // client instance to create additional components here, such as
+        // PayPal or Data Collector.
+
+        braintree.hostedFields.create({
+          client: clientInstance,
+          styles: {
+            'input': {
+              'font-size': '14px'
+            },
+            'input.invalid': {
+              'color': 'red'
+            },
+            'input.valid': {
+              'color': 'green'
+            }
+          },
+          fields: {
+            number: {
+              selector: '#card-number',
+              placeholder: '4111 1111 1111 1111'
+            },
+            cvv: {
+              selector: '#cvv',
+              placeholder: '123'
+            },
+            expirationDate: {
+              selector: '#expiration-date',
+              placeholder: '10/2019'
+            },
+            postalCode: {
+                selector: '#postal-code',
+                placeholder: '12345'
+            }
+          }
+        }, function (hostedFieldsErr, hostedFieldsInstance) {
+          if (hostedFieldsErr) {
+            console.error(hostedFieldsErr);
+            return;
+          }
+
+          submit.removeAttribute('disabled');
+
+          form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+              if (tokenizeErr) {
+                console.error(tokenizeErr);
+                return;
+                }
+                document.querySelector("#Nonce").value = payload.nonce;
+                form.submit();
+            });
+          }, false);
+        });
+      });
+    </script>
+
+}
