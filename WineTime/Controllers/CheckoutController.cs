@@ -110,9 +110,7 @@ namespace WineTime.Controllers
             PaymentModel model = new PaymentModel();
             model.ID = id;
             model.Order = await _context.WineOrders.Include(x => x.WineOrderProducts).FirstOrDefaultAsync(x => x.ID == id);
-            //TODO: Save this information to the database so we can ship the order
             ViewBag.ClientAuthorization = await _braintreeGateway.ClientToken.GenerateAsync();
-
             return View(model);
         }
 
@@ -147,6 +145,17 @@ namespace WineTime.Controllers
             return View(model);
             
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Schedule(ScheduleModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+
+        //    }
+        //    return View(model);
+
+        //}
 
         [HttpPost]
         public IActionResult ValidateAddress([FromBody]Lookup lookup)

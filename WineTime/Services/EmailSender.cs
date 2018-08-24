@@ -21,7 +21,7 @@ namespace WineTime.Services
             SendGrid.SendGridClient client = new SendGrid.SendGridClient(_apiKey);
             var msg = new SendGrid.Helpers.Mail.SendGridMessage()
             {
-                From = new SendGrid.Helpers.Mail.EmailAddress("admin@corked.codingtemple.com", "Corked Admin"),
+                From = new SendGrid.Helpers.Mail.EmailAddress("admin@corked.codingtemple.com", "Corked"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

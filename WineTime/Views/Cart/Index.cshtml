@@ -3,29 +3,32 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-@if (Model.WineCartProducts.Count == 0)
-{
-    <p>You don't have anything in your bag, <a asp-controller="WineList" asp-action="index">Check out some products</a></p>
-}
-else
-{
-    <table class="table">
-        @foreach (var product in Model.WineCartProducts)
-        {
-        <tr>
-            <td>@product.WineProducts.Name</td>
-            <td>@((product.WineProducts.Price ?? 0).ToString("C"))</td>
-            <td>@product.WineProducts.Description</td>
-            <td>@product.Quantity</td>
-            <td>
-                <form asp-action="remove" method="post">
-                    <input type="hidden" name="id" value="@product.ID" />
-                    <button class="btn btn-danger">Remove</button>
-                </form>
-            </td>
-        </tr>
-        }
-    </table>
-}
-<a asp-controller="checkout" asp-action="index" class="btn btn-primary">Checkout</a>
+<div class="w3-padding-large" style="margin: 2vw">
+    <h2 class="w3-center">CART</h2>
+    <hr />
+    @if (Model.WineCartProducts.Count == 0)
+    {
+        <p>You don't have anything in your bag, <a asp-controller="WineList" asp-action="index">Check out some products</a></p>
+    }
+    else
+    {
+        <table class="table">
+            @foreach (var product in Model.WineCartProducts)
+            {
+                <tr>
+                    <td>@product.WineProducts.Name</td>
+                    <td>@((product.WineProducts.Price ?? 0).ToString("C"))</td>
+                    <td>@product.WineProducts.Description</td>
+                    <td>@product.Quantity</td>
+                    <td>
+                        <form asp-action="remove" method="post">
+                            <input type="hidden" name="id" value="@product.ID" />
+                            <button class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    <a asp-controller="checkout" asp-action="index" class="btn btn-primary">Checkout</a>
+</div>

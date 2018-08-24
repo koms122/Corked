@@ -2,8 +2,6 @@
 
 @section Styles{
     <link href="~/css/wine.css" rel="stylesheet" />
-    <link href="bootstrap.min.css" rel="stylesheet">
-
 }
 
 <form>
@@ -46,7 +44,6 @@
                 <p class="card-text">@(product.Price.HasValue ? product.Price.Value.ToString("c") : "No Price")</p>
                 <a asp-controller="WineList" asp-action="Details" asp-route-id="@product.ID" class="btn btn-secondary">View Details</a>
             </div>
-
         </div>
     }
 </div>

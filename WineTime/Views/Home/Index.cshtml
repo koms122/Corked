@@ -4,41 +4,108 @@
 
 @section Styles{
     <link href="~/css/home.css" rel="stylesheet" />
-    <link href="bootstrap.min.css" rel="stylesheet">
-
 }
 
-<!-- Carousel -->
-<div class="container-fluid">
-    <div data-ride="car" class="carousel slide" id="carousel">
-        <ul class="carousel-indicators">
-            <li data-slide-to="0" class="active" data-target="#carousel"></li>
-            <li data-slide-to="1" data-target="#carousel"></li>
-            <li data-slide-to="2" data-target="#carousel"></li>
-        </ul>
-        <div class="carousel-inner">
-            <div class="active carousel-item">
-                <img alt="Corked" src="~/images/HomePagePic.jpg" /><a asp-controller="WineList" asp-action="Index"></a>
-            </div>
-            <div class="carousel-item">
-                <img alt="ShopNow" src="~/images/HomePagePic.jpg">
-                <div class="carousel-caption">
-                    <p><a class="btn btn-lg btn-primary" role="button" asp-controller="WineList" asp-action="Index">SHOP NOW!</a></p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img alt="FinerThingsClub" src="~/images/HomePagePic.jpg">
-                <div class="carousel-caption">
-                    <!-- Change asp-controller once the controller is made -->
-                    <p><a class="btn btn-lg btn-primary" role="button" asp-controller="WineList" asp-action="Index">Join the Finer Things Club Today!</a></p>
-                </div>
-            </div>
-        </div>
-        <a href="#carousel" class="carousel-control-prev" data-slide="prev">
-            <
-        </a>
-        <a href="#carousel" class="carousel-control-next" data-slide="next">
-            >
-        </a>
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1600px;min-width:500px" id="home">
+    <img class="w3-image" src="~/images/mainpic.jpg" alt="mainpic" width="1600" height="500">
+    <div class="w3-display-bottomleft w3-padding-large w3-opacity">
+        <h1 class="w3-xxlarge" style="color: darksalmon; font-size: 45px; letter-spacing: 5px;">&#161;Corked</h1>
     </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:1100px">
+
+    <!-- About Section -->
+    <!-- how it works -->
+    <div class="w3-row w3-padding-64" id="about">
+        <div class="w3-col m6 w3-padding-large w3-hide-small">
+            <img src="~/images/homebottles.svg" class="w3-round w3-image w3-opacity-min" alt="homeBottles" width="350" height="550">
+        </div>
+
+        <div class="w3-col m6 w3-padding-large">
+            <h1 class="w3-center" @*style="letter-spacing: 2px;*@">How does it work?</h1><br>
+            <p style="font-family: Playfair Display; text-align: center; letter-spacing: 3px; font-size: 25px;">
+                It's pretty simple, actually. Either order your favorite bottles of wine from Ros&eacute; to Cabernet OR
+                subscribe to the <span class="w3-tag w3-light-grey"><a asp-controller="Subscription" asp-action="Index">Finer Things Club</a></span> to be surprised. Have you ever tried cake flavored wine?
+            </p>
+        </div>
+    </div>
+
+    <!-- delivery -->
+    <div class="w3-row w3-padding-64" id="about">
+        <div class="w3-col m6 w3-padding-large">
+            <h1 class="w3-center" @*style="letter-spacing: 2px;*@">Want it right now?<br />We feel you</h1><br>
+            <p style="font-family: Playfair Display; text-align: center; letter-spacing: 3px; font-size: 25px;">
+                We know the excruciating pain of waiting days for delivery. Who thinks that far ahead? Order and get it within a two hour window. Because anything more than that is unacceptable.<br />
+                <button class="w3-button w3-white w3-border w3-border-red w3-round-large" asp-controller="WineList" asp-action="Index">Take me to the wines</button>
+            </p>
+        </div>
+
+        <div class="w3-col m6 w3-padding-large w3-hide-small">
+            <img src="~/images/fast-delivery.svg" class="w3-round w3-image w3-opacity-min" alt="fastDelivery" width="350" height="550">
+        </div>
+    </div>
+
+    <!-- finer things club -->
+    <div class="w3-row w3-padding-64" id="about">
+        <div class="w3-col m6 w3-padding-large w3-hide-small">
+            <img src="~/images/winebox.svg" class="w3-round w3-image w3-opacity-min" alt="homeBottles" width="350" height="550">
+        </div>
+
+        <div class="w3-col m6 w3-padding-large">
+            <h1 class="w3-center" @*style="letter-spacing: 2px;*@">Finer Things Club? </h1><br>
+            <p style="font-family: Playfair Display; text-align: center; letter-spacing: 3px; font-size: 25px;">
+                Ever sat down for dinner and realized you forgot the most important thing - wine? It's the worst! Well make sure that never happens again.<br />
+                <button class="w3-button w3-white w3-border w3-border-red w3-round-large" asp-controller="Subscription" asp-action="Index">Join Today!</button>
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Menu Section -->
+    <div class="w3-row w3-padding-64" id="menu">
+        <div class="w3-col l6 w3-padding-large">
+            <h1 class="w3-center">Our Menu</h1><br>
+            <h4>Bread Basket</h4>
+            <p class="w3-text-grey">Assortment of fresh baked fruit breads and muffins 5.50</p><br>
+
+            <h4>Honey Almond Granola with Fruits</h4>
+            <p class="w3-text-grey">Natural cereal of honey toasted oats, raisins, almonds and dates 7.00</p><br>
+
+            <h4>Belgian Waffle</h4>
+            <p class="w3-text-grey">Vanilla flavored batter with malted flour 7.50</p><br>
+
+            <h4>Scrambled eggs</h4>
+            <p class="w3-text-grey">Scrambled eggs, roasted red pepper and garlic, with green onions 7.50</p><br>
+
+            <h4>Blueberry Pancakes</h4>
+            <p class="w3-text-grey">With syrup, butter and lots of berries 8.50</p>
+        </div>
+
+        <div class="w3-col l6 w3-padding-large">
+            <img src="/w3images/tablesetting.jpg" class="w3-round w3-image w3-opacity-min" alt="Menu" style="width:100%">
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Contact Section -->
+    <div class="w3-container w3-padding-64" id="contact">
+        <h1>Contact</h1><br>
+        <p>We offer full-service catering for any event, large or small. We understand your needs and we will cater the food to satisfy the biggerst criteria of them all, both look and taste. Do not hesitate to contact us.</p>
+        <p class="w3-text-blue-grey w3-large"><b>Catering Service, 42nd Living St, 43043 New York, NY</b></p>
+        <p>You can also contact us by phone 00553123-2323 or email catering@catering.com, or you can send us a message here:</p>
+        <form action="/action_page.php" target="_blank">
+            <p><input class="w3-input w3-padding-16" type="text" placeholder="Name" required name="Name"></p>
+            <p><input class="w3-input w3-padding-16" type="number" placeholder="How many people" required name="People"></p>
+            <p><input class="w3-input w3-padding-16" type="datetime-local" placeholder="Date and time" required name="date" value="2017-11-16T20:00"></p>
+            <p><input class="w3-input w3-padding-16" type="text" placeholder="Message \ Special requirements" required name="Message"></p>
+            <p><button class="w3-button w3-light-grey w3-section" type="submit">SEND MESSAGE</button></p>
+        </form>
+    </div>
+
+    <!-- End page content -->
 </div>

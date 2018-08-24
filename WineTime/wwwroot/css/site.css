@@ -7,15 +7,11 @@
 
 body {
     padding-bottom: 20px;
-    font-family: 'Open Sans', sans-serif;
-    color: goldenrod;
+    font-family: "Playfair Display";
     height: 100%;
-    background-color: #400628;
 }
 
 div.mainHomeParent {
-    color: goldenrod;
-    font-family: 'Lobster Two', cursive;
     height: 72px;
     line-height: 72px;
 }
@@ -27,7 +23,7 @@ div .mainHomeChild {
 }
 /*Links*/
 a{
-    color: papayawhip;
+    text-decoration:none;
 }
 
 /*Footer*/
@@ -44,53 +40,27 @@ footer span {
     word-spacing: 0.5em;
 }
 
+.corked {
+    font-family: 'Lobster Two', cursive;
+    font-size: 35px;
+    text-align: center;
+    padding-bottom: 25px;
+    text-decoration: none;
+}
+
 .justify-content-end {
     list-style: none;
 }
 
-/*Navbar*/
-.navbar-brand {
-    color: goldenrod;
-    margin-left: 65px;
-    margin-right: 50px;
-    font-family: 'Lobster Two', cursive;
-    font-size: 40px;
+
+.w3-large{
+    font-size: 30px!important;
 }
 
-.nav-item {
-    margin-right: 25px;
-    text-decoration: none;
+.w3-bar-block .w3-bar-item{
+    padding: 0px 16px;
 }
 
-nav {
-    padding: 5rem;
-}
-
-.nav-link dropdown-toggle{
-    color: papayawhip;
-}
-
-.fa.fa-navicon {
-    color: white;
-}
-
-/*CartButton*/
-.btn-info {
-    margin-left: 0.5em;
-}
-
-.fa-shopping-bag:before {
-    font-size: 2.5em;
-    margin-left: 1em;
-}
-
-/*SignUp/Login/Cart*/
-.user {
-    text-align: right;
-}
-.usernav{
-    margin-right: 0.75em;
-}
 
 
 /* Hide/rearrange for smaller screens 

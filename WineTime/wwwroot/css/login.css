@@ -1,0 +1,11 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+.login {
+    width: 30%;
+    border: .5px solid darkgrey;
+    border-radius: 4px;
+    margin: 0 auto;
+    padding: 25px;
+}

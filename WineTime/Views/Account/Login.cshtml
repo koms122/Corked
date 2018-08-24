@@ -5,13 +5,18 @@
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
+@section Styles{
+    <link href="~/css/login.css" rel="stylesheet" />
+}
+
 @{
     ViewData["Title"] = "Log in";
 }
 
-<h2>@ViewData["Title"]</h2>
-<div class="row">
-    <div class="col-md-4">
+<div class="login">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div class="col-md-12">
         <section>
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                 <hr />
@@ -51,7 +56,7 @@
 </div>
 
 
-    @* Code to use another service,such as Facebook/Google to login
+@* Code to use another service,such as Facebook/Google to login
 
         <div class="col-md-6 col-md-offset-2">
         <section>
