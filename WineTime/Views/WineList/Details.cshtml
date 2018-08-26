@@ -3,22 +3,32 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>@Model.Name</h2>
-<img class="img-fluid" src="/@Model.ImagePath" />
+@section Styles{
+    <link href="~/css/login.css" rel="stylesheet" />
+}
 
-<form method="post">
-    <input type="hidden" value="@Model.ID" />
-    <select name="quantity">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-    </select>
-    <button class="btn btn-primary">Add to Cart</button>
-</form>
+<div class="login w3-center">
+    <h2>@Model.Name</h2>
+    <hr />
+    <div class="col-md-12">
+        <form method="post">
+            <img class="img-fluid" src="/@Model.ImagePath" style="width: 75%;" />
+            <p class="w3-container w3-center" style="letter-spacing: 1.5px;">@Model.Description</p>
+            <br />
+            <input type="hidden" value="@Model.ID" />
+            <select name="quantity" style="padding-top: 6px; padding-bottom: 10px;">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <button class="btn btn-primary">Add to Cart</button>
+        </form>
+    </div>
+</div>

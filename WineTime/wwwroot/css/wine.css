@@ -4,3 +4,10 @@
 .card{
     display:flex;
 }
+
+#limitText {
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

@@ -27,9 +27,9 @@ namespace WineTime
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-                //Use this when publishing to Azure
-                //options.UseInMemoryDatabase("Default"));
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //Use this when publishing to Azure
+            options.UseInMemoryDatabase("Default"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

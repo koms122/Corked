@@ -22,14 +22,14 @@
         <a asp-area="" asp-controller="Home" asp-action="Index" class="w3-bar-item w3-button"><i class="fas fa-home"></i>   HOME</a>
         <div class="w3-dropdown-hover">
             <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()"><i class="fas fa-wine-glass-alt"></i>  SHOP WINE<i class="fa fa-caret-down"></i></button>
-            <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <div id="demoAcc" class="w3-hide w3-white w3-card" style="font-size:15px;">
                 <a class="w3-bar-item w3-button" asp-controller="WineList" asp-action="Index">ALL WINE</a>
                 <br />
                 <a class="w3-bar-item w3-button" asp-controller="WineList" asp-action="Index" asp-route-category="redWine">RED WINE</a>
                 <br />
                 <a class="w3-bar-item w3-button" asp-controller="WineList" asp-action="Index" asp-route-category="whiteWine">WHITE WINE</a>
                 <br />
-                <a class="w3-bar-item w3-button" asp-controller="WineList" asp-action="Index" asp-route-category="rose">ROSE</a>
+                <a class="w3-bar-item w3-button" asp-controller="WineList" asp-action="Index" asp-route-category="rose">ROS&Eacute;</a>
                 <br />
                 <a class="w3-bar-item w3-button" asp-controller="WineList" asp-action="Index" asp-route-category="champagne">CHAMPAGNE</a>
                 <br />
@@ -47,14 +47,23 @@
         <div class="register">
             <a class="w3-bar-item w3-button" asp-area="" asp-controller="Account" asp-action="Register"><i class="fas fa-user-plus"></i>REGISTER</a>
         </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <a class="w3-bar-item w3-button" asp-controller="Home" asp-action="About">About</a>
+        <a class="w3-bar-item w3-button" asp-controller="Home" asp-action="Contact">Contact Us</a>
+
+
     </div>
 
     <!-- Icon navbar w/ login and cart -->
-        <div class="w3-bar" style="display: flex; justify-content: flex-end; font-size: 18px">
+    <div class="w3-right w3-top" style="margin-left: 20%; padding-right: 320px;">
+        <div class="w3-bar" style="width: 100%; display: flex; justify-content: flex-end; font-size: 18px">
             @await Html.PartialAsync("_LoginPartial")
             <a asp-area="" asp-controller="Cart" asp-action="Index" class="w3-bar-item w3-button"><i class="fas fa-shopping-bag"></i>  CART</a>
         </div>
-
+    </div>
 
     <div id="main">
         <diV>

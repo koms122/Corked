@@ -1,16 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Contact Us";
 }
-<h2>@ViewData["Title"]</h2>
 
-<address>
-    222 West Ontario Street<br />
-    Suite #450<br />
-    Chicago, Illinois 60654<br />
-    <abbr title="Phone">P:</abbr>
-    (773)328-8471
-</address>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:admin@corked.codingtemple.com">admin@corked.codingtemple.com</a><br />
-</address>
+@section Styles{
+    <link href="~/css/login.css" rel="stylesheet" />
+}
+
+<div class="login">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div class="col-md-12">
+        <address>
+            222 West Ontario Street<br />
+            Suite #450<br />
+            Chicago, Illinois 60654<br />
+            <abbr title="Phone">P:</abbr>
+            (773)328-8471
+        </address>
+        <address>
+            <strong>Support:</strong> <a href="mailto:admin@corked.codingtemple.com">admin@corked.codingtemple.com</a><br />
+        </address>
+    </div>
+</div>

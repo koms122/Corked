@@ -11,7 +11,7 @@ using WineTime.Models;
 namespace WineTime.Controllers
 {
     // this allows only those that have the role of an admin to access this page
-    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Administrator")]
+    //[Microsoft.AspNetCore.Authorization.Authorize(Roles = "Administrator")]
     public class WineProductsAdminController : Controller
     {
         private readonly ApplicationDbContext _context;

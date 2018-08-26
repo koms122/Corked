@@ -3,47 +3,41 @@
 @section Styles{
     <link href="~/css/wine.css" rel="stylesheet" />
 }
+<form class="w3-container w3-card-4" style="margin: 10px 65px 20px 45px;">
+    <div class="w3-row" style="display:flex; height: 40px;">
+        <select class="w3-select" name="category">
+            <option value="">All Products</option>
+            <option value="redWine">Red Wine</option>
+            <option value="whiteWine">White Wine</option>
+            <option value="rose">Ros&eacute;</option>
+            <option value="champagne">Champagne</option>
+            <option value="cabernetSauvignon">Cabernet Sauvignon</option>
+            <option value="Chardonnay">Chardonnay</option>
+        </select>
 
-<form>
-    <div class="form-row">
-        <div class="form-group col-5">
-            <label for="category">Category:</label>
-            <select name="category" class="form-control">
-                <option value="">All Products</option>
-                <option value="redWine">RED WINE</option>
-                <option value="whiteWine">WHITE WINE</option>
-                <option value="rose">ROSE</option>
-                <option value="champagne">CHAMPAGNE</option>
-                <option value="cabernetSauvignon">CABERNET SAUVIGNON</option>
-                <option value="Chardonnay">CHARDONNAY</option>
-            </select>
-        </div>
-        <div class="form-group col-5">
-            <label for="sort">Sort By</label>
-            <select name="sort" class="form-control">
-                <option value="price">Price (High to Low)</option>
-                <option value="name">Name</option>
-            </select>
-        </div>
-        <div class="form-group col-2">
-            <label>&nbsp;</label>
-            <button class="btn btn-default" style="display:block">Sort & Filter</button>
-        </div>
+        <select class="w3-select" name="sort">
+            <option value="price">Price (High to Low)</option>
+            <option value="name">Name</option>
+        </select>
+
+        <p><button class="w3-btn">Sort & Filter</button></p>
     </div>
+
 </form>
 
-
-<div class="card-deck">
+<div style="display:flex; flex-wrap: wrap; justify-content:center;">
     @foreach (var product in Model)
     {
-        <div class="card bg-light mb-3" style="width: 18rem;">
-            <img class="card-img-top" src="@product.ImagePath" alt="@product.Name" style="width:300px; height:400px">
-            <div class="card-body">
-                <h5 class="card-title">@product.Name</h5>
-                <p class="card-text">@product.Description</p>
-                <p class="card-text">@(product.Price.HasValue ? product.Price.Value.ToString("c") : "No Price")</p>
+        <div class="w3-card-4 w3-hover-shadow" style="width: 30%; margin-right: 20px; margin-bottom: 20px;">
+            <div class="w3-container w3-center" style="padding-bottom:20px;">
+                <h5 class="w3-container w3-center">@product.Name</h5>
+                <img src="@product.ImagePath" alt="@product.Name" style="width: 75%;">
+                <p class="w3-container w3-center" id="limitText" style="letter-spacing: 1.5px;">@product.Description</p>
+                <p class="w3-container w3-center">@(product.Price.HasValue ? product.Price.Value.ToString("c") : "No Price")</p>
                 <a asp-controller="WineList" asp-action="Details" asp-route-id="@product.ID" class="btn btn-secondary">View Details</a>
             </div>
         </div>
     }
 </div>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>

@@ -4,8 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -24,9 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Schedule)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.DateCreated)
             </th>

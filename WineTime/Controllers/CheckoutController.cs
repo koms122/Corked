@@ -91,7 +91,6 @@ namespace WineTime.Controllers
                 }
 
                 _context.WineCartProducts.RemoveRange(cart.WineCartProducts);
-                _context.WineCarts.Remove(cart);
 
                 if (Request.Cookies.ContainsKey("cart_id"))
                 {
