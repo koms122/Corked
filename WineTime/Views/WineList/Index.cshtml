@@ -6,19 +6,27 @@
 <form class="w3-container w3-card-4" style="margin: 10px 65px 20px 45px;">
     <div class="w3-row" style="display:flex; height: 40px;">
         <select class="w3-select" name="category">
-            <option value="">All Products</option>
-            <option value="redWine">Red Wine</option>
-            <option value="cabernetSauvignon">Cabernet Sauvignon</option>
-            <option value="merlot">Merlot</option>
-            <option value="malbec">Malbec</option>
-            <option value="pinotNoir">Pinot Noir</option>
-            <option value="whiteWine">White Wine</option>
-            <option value="chardonnay">Chardonnay</option>
-            <option value="pinotGris">Pinot Gris</option>
-            <option value="sauvignonBlanc">Sauvignon Blanc</option>
-            <option value="rose">Ros&eacute;</option>
-            <option value="champagne">Champagne</option>
-        </select>
+            @if (string.IsNullOrEmpty(ViewBag.selectedCategory))
+            {
+                <option value="" selected>All Wine</option>
+            }
+            else
+            {
+                <option value="">All Wine</option>
+            }
+            @foreach (string category in (string[])ViewData["Categories"])
+            {
+                @if (ViewBag.selectedCategory == category)
+                {
+                    <option value="@category" selected>@category</option>
+                }
+                else
+                {
+                    <option value="@category">@category</option>
+                }
+
+            }
+            </select>
 
         <select class="w3-select" name="sort">
             <option value="price">Price (High to Low)</option>
